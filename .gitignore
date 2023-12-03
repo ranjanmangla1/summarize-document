@@ -3,3 +3,5 @@
 
 # Ignore the documents folder and its contents
 documents/
+
+db.sqlite3
