@@ -1,0 +1,171 @@
+<!-- summarizer_app/templates/summarizer_app/upload.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summarizer App - Upload</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            {% comment %} align-items: center; {% endcomment %}
+            justify-content: center;
+            {% comment %} height: 100vh; {% endcomment %}
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            {% comment %} box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); {% endcomment %}
+            text-align: center;
+            {% comment %} width: 80%; {% endcomment %}
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        {% comment %} label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        } {% endcomment %}
+
+        {% comment %} input[type="file"] {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        } {% endcomment %}
+
+        button {
+            background-color: #000000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        #summary {
+            margin-top: 20px;
+            display: none;
+            color: #333;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .text {
+            margin-top: 20px;
+            color: #333;
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+
+        /* styles.css */
+
+        .custome-file-input {
+            {% comment %} .[myclass] {% endcomment %}
+
+            width: 0.1px;
+
+            height: 0.1px;
+
+            opacity: 0;
+
+            overflow: hidden;
+
+            position: absolute;
+
+            z-index: -1;
+
+            padding: 100px;
+        }
+
+        .custome-file-input + label {
+            font-size: 0.875rem;
+
+            line-height: 1;
+
+            font-weight: 400;
+
+            color: [whatever you want];
+
+            background-color: #000000;
+
+            border-color: #777777;
+
+            display: inline-block;
+
+            cursor: pointer;
+
+            vertical-align: top;
+
+            margin-bottom: .5rem;
+
+            box-sizing: border-box;
+
+            border-radius: 20px;
+        }
+
+        .custome-file-input: focus + label, .custome-file-input:hover + label {
+            background-color: #333;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Summarizer App</h1>
+            <label for="{{ form.file.name }}">Choose a file:</label>
+
+            {{ form.file }}
+            {% comment %} <label for="custome-file-input" class="custom-file-label">Choose File</label> {% endcomment %}
+        
+            <button type="submit" onclick="showLoading()">Upload</button>
+            <div id="summary">Your summary will appear here</div>
+            <div id="loading">Summarizing...</div>
+        </form>
+
+        <div class="text">{{ text|linebreaksbr }}</div>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+            document.getElementById("summary").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
