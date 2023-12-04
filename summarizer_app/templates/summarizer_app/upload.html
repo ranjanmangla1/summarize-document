@@ -6,11 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Summarizer App - Upload</title>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
 
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Open Sans', sans-serif;
             background-color: #fff;
             margin: 0;
             padding: 0;
@@ -20,8 +25,14 @@
             {% comment %} height: 100vh; {% endcomment %}
         }
 
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
         form {
-            background-color: #fff;
+            {% comment %} background-color: #fff; {% endcomment %}
             padding: 20px;
             border-radius: 8px;
             {% comment %} box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); {% endcomment %}
@@ -33,6 +44,10 @@
 
         h1 {
             color: #333;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            line-height: 1;
+            font-size: 4.5rem;
             margin-bottom: 20px;
         }
 
@@ -68,7 +83,7 @@
 
         #summary {
             margin-top: 20px;
-            display: none;
+            {% comment %} display: none; {% endcomment %}
             color: #333;
             border-top: 1px solid #ddd;
             padding-top: 10px;
@@ -80,62 +95,31 @@
             color: #555;
         }
 
+        .summary-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+        }
+
         .text {
-            margin-top: 20px;
+            max-width: 600px;
+            margin: 0.8rem 1rem 5px;
             color: #333;
             text-align: justify;
             line-height: 1.6;
         }
 
-
-        /* styles.css */
-
-        .custome-file-input {
-            {% comment %} .[myclass] {% endcomment %}
-
-            width: 0.1px;
-
-            height: 0.1px;
-
-            opacity: 0;
-
-            overflow: hidden;
-
-            position: absolute;
-
-            z-index: -1;
-
-            padding: 100px;
+        .fileBox {
+            {% comment %} border: 1px solid black; {% endcomment %}
+            margin: 1rem 0.5rem;
+            padding: 2px 5px;
         }
 
-        .custome-file-input + label {
-            font-size: 0.875rem;
-
-            line-height: 1;
-
-            font-weight: 400;
-
-            color: [whatever you want];
-
-            background-color: #000000;
-
-            border-color: #777777;
-
-            display: inline-block;
-
-            cursor: pointer;
-
-            vertical-align: top;
-
-            margin-bottom: .5rem;
-
-            box-sizing: border-box;
-
-            border-radius: 20px;
-        }
-
-        .custome-file-input: focus + label, .custome-file-input:hover + label {
-            background-color: #333;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
         }
 
     </style>
@@ -143,27 +127,40 @@
 
 <body>
 
-    <div>
+    <div style="width: 100vw; min-height: 100vh; position: fixed; z-index: -1; display: flex; justify-content: center; padding: 120px 24px 160px 24px; pointer-events: none;">
+        <div style="background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%); position: absolute; content: &quot;&quot;; z-index: 2; width: 100%; height: 100%; top: 0;"></div>
+        <div style="content: &quot;&quot;; background-image: url(https://d2vwwcvoksz7ty.cloudfront.net/grid.svg); z-index: 1; position: absolute; width: 100%; height: 100%; top: 0; opacity: 0.4; filter: invert(1);"></div>
+        <div style="z-index: 3; width: 100%; max-width: 640px; background-image: radial-gradient(at 27% 37%, hsla(15, 100%, 50%, 1) 0px, transparent 0%), 
+            radial-gradient(at 97% 21%, hsla(15, 100%, 50%, 1) 0px, transparent 50%),
+            radial-gradient(at 52% 99%, hsla(15, 100%, 50%, 1) 0px, transparent 50%),
+            radial-gradient(at 10% 29%, hsla(15, 100%, 50%, 1) 0px, transparent 50%),
+            radial-gradient(at 97% 96%, hsla(15, 100%, 50%, 1) 0px, transparent 50%),
+            radial-gradient(at 33% 50%, hsla(15, 100%, 50%, 1) 0px, transparent 50%),
+            radial-gradient(at 79% 53%, hsla(15, 100%, 50%, 1) 0px, transparent 50%); position: absolute; height: 100%; filter: blur(100px) saturate(150%); top: 80px; opacity: 0.15;"></div>
+    </div>
+    
+    <main>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <h1>Summarizer App</h1>
-            <label for="{{ form.file.name }}">Choose a file:</label>
+            <h1>Document Summarizer</h1>
+            <label for="{{ form.file.name }}">(Only docx & pdf files are allowed)</label>
 
-            {{ form.file }}
-            {% comment %} <label for="custome-file-input" class="custom-file-label">Choose File</label> {% endcomment %}
+            <div class="fileBox">
+                {{ form.file }}
+            </div>
         
-            <button type="submit" onclick="showLoading()">Upload</button>
-            <div id="summary">Your summary will appear here</div>
+            <button type="submit" onclick="showLoading()">Generate Summary</button>
             <div id="loading">Summarizing...</div>
         </form>
 
+        <h1 class="summary-title">Summary</h1>
         <div class="text">{{ text|linebreaksbr }}</div>
-    </div>
+    </main>
 
     <script>
         function showLoading() {
             document.getElementById("loading").style.display = "block";
-            document.getElementById("summary").style.display = "none";
+            document.getElementById("summary-title").style.display = "none";
         }
     </script>
 </body>
